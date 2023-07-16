@@ -32,7 +32,7 @@ const todos = {
 };
 
 const subTodos = {
-  all: [ 'getSubTodos', ],
+  all: (todoId: number) => [ 'getSubTodos', todoId, ],
   byId: (id: number) => [ 'getSubTodoById', id, ],
   byUserId: (userId: number) => [ 'getSubTodoByUserId', userId, ],
   byStatus: (status: TodoStatus) => [ 'getSubTodoByStatus', status, ],

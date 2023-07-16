@@ -30,11 +30,6 @@ export interface ICreateWithdrawalDto {
   text?: string;
 }
 
-export interface ICookies {
-  sign: boolean;
-  tokenExp: number;
-}
-
 export interface ICreateTodoDto {
   userId: number;
   content: string;
@@ -55,5 +50,9 @@ export interface IUpdateSubTodoDto {
 }
 
 export interface IUpdateTodoStatusDto {
+  status: TodoStatus;
+}
+
+export interface IUpdateSubTodoStatusTdo {
   status: TodoStatus;
 }

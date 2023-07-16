@@ -4,16 +4,23 @@ import { useRouter } from 'next/router';
 import tw, { css } from 'twin.macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import {
-  Footer, Header, Main, Meta, Nav
+  Footer, Header, Main, Meta
 } from '@/components/Layout';
 import { IAppLayoutProps, IMetaData } from '@/types/site.types';
 import { getCookie } from '@/utils/cookie';
 import { useRefresh } from '@/hooks/queries';
+import { getStorage } from '@/utils/storage';
+import { IUser } from '@/types/entity.typs';
+import { AppDispatch } from '@/store';
+import { setExp, setUser } from '@/reducers/auth.reducer';
 
 export function AppLayout({
   children, title, description, keywords, author, image, created, updated, tags, type, section,
 }: IAppLayoutProps) {
+  const dispatch = useDispatch<AppDispatch>();
+
   const qc = useQueryClient();
   const tokenExp = getCookie<number>('tokenExp');
 
@@ -38,6 +45,23 @@ export function AppLayout({
       console.log('재발급 완료');
     }
   }, [ tokenExp, ]);
+
+  useEffect(() => {
+    const user = getStorage<IUser>('user');
+    const tokenExp = getCookie<number>('tokenExp');
+
+    if (user) {
+      dispatch(setUser({
+        user,
+      }));
+    }
+
+    if (tokenExp) {
+      dispatch(setExp({
+        tokenExp,
+      }));
+    }
+  }, []);
 
   const { asPath, } = useRouter();
 

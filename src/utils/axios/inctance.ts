@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 const baseUrl = process.env.NODE_ENV === 'development'
   ? 'http://localhost:4000'
-  : '';
+  : 'https://port-0-nihil-todo-server-kvmh2mlk2rh5ye.sel4.cloudtype.app';
 
 const config: AxiosRequestConfig = {
   withCredentials: true,

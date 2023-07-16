@@ -22,6 +22,14 @@ export interface IMutationType<T, P> {
   isSuccess?: boolean;
 }
 
+export interface IDeleteType<T> {
+  mutate: UseMutateFunction<T, AxiosError, unknown, unknown>;
+  error?: AxiosError;
+  isLoading?: boolean;
+  isError?: boolean;
+  isSuccess?: boolean;
+}
+
 export type IQueryOptions<T> = UseQueryOptions<T>;
 
 export interface IQueryParameter<T> {

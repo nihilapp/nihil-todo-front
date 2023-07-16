@@ -1,13 +1,15 @@
 import React from 'react';
 import tw, { css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
-import { Page } from '../Base';
+import Link from 'next/link';
 
 interface Props {
+  href: string;
+  children: React.ReactNode;
   styles?: SerializedStyles;
 }
 
-export function Nav({ styles, }: Props) {
+export function Page({ href, children, styles, }: Props) {
   const style = {
     default: css([
       tw`  `,
@@ -17,9 +19,7 @@ export function Nav({ styles, }: Props) {
 
   return (
     <>
-      <nav css={style.default}>
-        <Page href='/'>투두리스트</Page>
-      </nav>
+      <Link href={href} css={style.default}>{children}</Link>
     </>
   );
 }

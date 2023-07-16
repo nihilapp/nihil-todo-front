@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIsFetching, useIsMutating } from 'react-query';
+import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 import tw, { css } from 'twin.macro';
 import { CgSpinner } from 'react-icons/cg';
 
