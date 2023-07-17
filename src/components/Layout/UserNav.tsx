@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import tw, { css } from 'twin.macro';
+import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -11,7 +11,7 @@ import { removeStorage } from '@/utils/storage';
 import { removeCookie } from '@/utils/cookie';
 
 interface Props {
-  styles?: SerializedStyles;
+  styles?: TwStyle | SerializedStyles;
 }
 
 export function UserNav({ styles, }: Props) {

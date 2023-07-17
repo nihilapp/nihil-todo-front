@@ -8,6 +8,7 @@ import { setSignUpComplete } from '@/reducers/auth.reducer';
 import {
   IsLoading, SignInForm, TodoInput, TodoList
 } from '@/components/Content';
+import { PageTitle } from '@/components/Base';
 
 export default function IndexPage() {
   const { user, signUpComplete, } = useSelector((state: RootState) => state.auth);
@@ -25,8 +26,7 @@ export default function IndexPage() {
 
   const style = {
     default: css([
-      tw` py-4 `,
-      tw` [>h2]:( p-3 bg-black-700 text-white font-900 text-center text-[2rem] ) `,
+      tw` py-10 `,
     ]),
   };
 
@@ -41,7 +41,10 @@ export default function IndexPage() {
               <IsLoading />
             </>
           ) : (
-            <SignInForm />
+            <div tw='text-center'>
+              <PageTitle styles={tw` justify-center `}>사용하려면 로그인하세요</PageTitle>
+              <SignInForm />
+            </div>
           )}
         </div>
       </AppLayout>

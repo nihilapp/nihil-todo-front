@@ -15,10 +15,12 @@ import { getStorage } from '@/utils/storage';
 import { IUser } from '@/types/entity.typs';
 import { AppDispatch } from '@/store';
 import { setExp, setUser } from '@/reducers/auth.reducer';
+import { getColor } from '@/utils/getColor';
 
 export function AppLayout({
   children, title, description, keywords, author, image, created, updated, tags, type, section,
 }: IAppLayoutProps) {
+  const color = getColor();
   const dispatch = useDispatch<AppDispatch>();
 
   const qc = useQueryClient();
@@ -84,6 +86,17 @@ export function AppLayout({
       '@import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css)',
       '@import url(https://fonts.cdnfonts.com/css/cascadia-code)',
       tw` [*]:( box-border p-0 m-0 font-sans ) `,
+      (css`
+        body {
+          max-width: 700px;
+          margin: 0 auto;
+
+          & > div#__next {
+            background-color: ${color.blue[50]};
+            padding: 1.25rem;
+          }
+        }
+      `),
     ]),
   };
 
@@ -98,7 +111,8 @@ export function AppLayout({
       <ToastContainer
         position='top-right'
         theme='colored'
-        autoClose={7000}
+        autoClose={4000}
+        pauseOnFocusLoss={false}
       />
     </>
   );

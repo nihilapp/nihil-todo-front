@@ -1,10 +1,10 @@
 import React from 'react';
-import tw, { css } from 'twin.macro';
+import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { Page } from '../Base';
 
 interface Props {
-  styles?: SerializedStyles;
+  styles?: TwStyle | SerializedStyles;
 }
 
 export function Nav({ styles, }: Props) {
@@ -18,7 +18,7 @@ export function Nav({ styles, }: Props) {
   return (
     <>
       <nav css={style.default}>
-        <Page href='/'>투두리스트</Page>
+        <Page href='/' icon='tabler:list-check'>투두 매니저</Page>
       </nav>
     </>
   );

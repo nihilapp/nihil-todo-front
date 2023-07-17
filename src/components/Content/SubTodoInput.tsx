@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import tw, { css } from 'twin.macro';
+import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -11,7 +11,7 @@ import { useCreateSubTodo } from '@/hooks/queries';
 
 interface Props {
   todo: ITodo;
-  styles?: SerializedStyles;
+  styles?: TwStyle | SerializedStyles;
 }
 
 export function SubTodoInput({ todo, styles, }: Props) {
@@ -54,7 +54,7 @@ export function SubTodoInput({ todo, styles, }: Props) {
         <input
           type='text'
           placeholder='할 일을 입력하세요'
-          autoComplete='false'
+          autoComplete='off'
           {...subTodoInput.data}
         />
         <button>추가</button>

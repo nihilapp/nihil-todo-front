@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import tw, { css } from 'twin.macro';
+import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
@@ -10,7 +10,7 @@ import { SubTodoList } from './SubTodoList';
 
 interface Props {
   todo: ITodo;
-  styles?: SerializedStyles;
+  styles?: TwStyle | SerializedStyles;
 }
 
 export function TodoItem({ todo, styles, }: Props) {

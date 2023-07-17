@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import tw, { css } from 'twin.macro';
+import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -9,7 +9,7 @@ import { useCreateTodo } from '@/hooks/queries';
 import { RootState } from '@/store';
 
 interface Props {
-  styles?: SerializedStyles;
+  styles?: TwStyle | SerializedStyles;
 }
 
 export function TodoInput({ styles, }: Props) {
@@ -51,7 +51,7 @@ export function TodoInput({ styles, }: Props) {
         <input
           type='text'
           placeholder='할 일을 입력하세요'
-          autoComplete='false'
+          autoComplete='off'
           {...todoInput.data}
         />
         <button>추가</button>

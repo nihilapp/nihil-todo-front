@@ -21,13 +21,13 @@ const queryClient = new QueryClient({
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
       onError(error: AxiosError) {
-        toast.error(`에러가 발생했습니다. ${error.message}`);
+        toast.error(`${error.message}`);
       },
     },
     mutations: {
       retry: 0,
       onError(error: AxiosError) {
-        toast.error(`에러가 발생했습니다. ${error.message}`);
+        toast.error(`${error.message}`);
       },
     },
   },

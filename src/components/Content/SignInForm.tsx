@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react';
-import tw, { css } from 'twin.macro';
+import React, { useCallback, useState } from 'react';
+import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 import { useInput } from '@/hooks';
 import { useSignIn } from '@/hooks/queries';
 import { dateAddHour } from '@/utils/date';
@@ -11,12 +12,17 @@ import { setStorage } from '@/utils/storage';
 import { setCookie } from '@/utils/cookie';
 import { AppDispatch } from '@/store';
 import { setExp, setUser } from '@/reducers/auth.reducer';
+import { textStyle } from '@/styles/text.style';
+import { IErrorMessage } from '@/types/axios.type';
 
 interface Props {
-  styles?: SerializedStyles;
+  styles?: TwStyle | SerializedStyles;
 }
 
 export function SignInForm({ styles, }: Props) {
+  const [ isError, setIsError, ] = useState(false);
+  const [ errorMessage, setErrorMessage, ] = useState('');
+
   const dispatch = useDispatch<AppDispatch>();
 
   const qc = useQueryClient();
@@ -28,6 +34,12 @@ export function SignInForm({ styles, }: Props) {
   const onSubmitForm = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+
+      if (!(email.data.value && password.data.value)) {
+        setIsError(true);
+        setErrorMessage('이메일과 비밀번호를 입력해야합니다.');
+        return;
+      }
 
       signIn.mutate({
         email: email.data.value,
@@ -52,7 +64,14 @@ export function SignInForm({ styles, }: Props) {
           email.setValue('');
           password.setValue('');
 
+          setIsError(false);
+          setErrorMessage('');
+
           toast.success('성공적으로 로그인 되었습니다.');
+        },
+        onError(error: AxiosError<IErrorMessage>) {
+          setIsError(true);
+          setErrorMessage(error.response.data.message);
         },
       });
     },
@@ -60,11 +79,25 @@ export function SignInForm({ styles, }: Props) {
   );
   const style = {
     default: css([
-      tw`  `,
+      tw` flex flex-col gap-2 `,
       styles,
+      textStyle.size,
     ]),
     input: css([
-      tw` border border-black-base/20 p-2 `,
+      tw` border border-black-base/20 p-2 rounded-1 w-[80%] text-center outline-none `,
+      tw` transition-[border-color] duration-[.3s] `,
+      tw` focus:( border-blue-400 ) `,
+    ]),
+    label: css([
+      tw` block mb-5 `,
+    ]),
+    button: css([
+      tw` w-[80%] p-2 bg-blue-400 mx-auto rounded-1 text-white outline-none font-700 `,
+      tw` transition-[background-color] duration-[.3s] `,
+      tw` hover:( bg-blue-500 ) `,
+    ]),
+    errorMessage: css([
+      tw` text-red-500 mt-2 font-700 `,
     ]),
   };
 
@@ -74,19 +107,23 @@ export function SignInForm({ styles, }: Props) {
         <label htmlFor='email'>
           <input
             type='text'
+            autoComplete='off'
             {...email.data}
             css={style.input}
           />
         </label>
-        <label htmlFor='password'>
+        <label htmlFor='password' css={style.label}>
           <input
             type='password'
-            autoComplete='false'
+            autoComplete='off'
             {...password.data}
             css={style.input}
           />
+          {isError && (
+            <p css={style.errorMessage}>{errorMessage}</p>
+          )}
         </label>
-        <button>로그인</button>
+        <button css={style.button}>로그인</button>
       </form>
     </>
   );

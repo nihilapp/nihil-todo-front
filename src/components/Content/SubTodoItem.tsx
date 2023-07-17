@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import tw, { css } from 'twin.macro';
+import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
@@ -8,7 +8,7 @@ import { useDeleteSubTodo, useUpdateSubTodo, useUpdateSubTodoStatus } from '@/ho
 
 interface Props {
   todo: ISubTodo;
-  styles?: SerializedStyles;
+  styles?: TwStyle | SerializedStyles;
 }
 
 export function SubTodoItem({ todo, styles, }: Props) {

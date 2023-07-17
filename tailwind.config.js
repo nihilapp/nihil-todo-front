@@ -19,6 +19,9 @@ module.exports = {
         sm: { min: '480px', max: '767px', },
         md: { min: '768px', max: '1023px', },
         lg: { min: '1024px', },
+        'mb-sm': { min: '480px', },
+        'mb-md': { min: '768px', },
+        'mb-lg': { min: '1024px', },
       },
       borderRadius: {
         0: '0px',
@@ -148,8 +151,9 @@ module.exports = {
         900: 900,
       },
       fontSize: {
-        small: '1rem',
-        normal: '1.2rem',
+        'mb-normal': '1rem',
+        'mb-sm': '1.1rem',
+        'mb-md': '1.2rem',
         h1: '3rem',
         h2: '2.5rem',
         h3: '2.25rem',

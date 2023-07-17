@@ -1,5 +1,5 @@
 import React from 'react';
-import tw, { css } from 'twin.macro';
+import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { useSubTodo } from '@/hooks/queries';
 import { ITodo } from '@/types/entity.typs';
@@ -7,7 +7,7 @@ import { SubTodoItem } from './SubTodoItem';
 
 interface Props {
   todo: ITodo;
-  styles?: SerializedStyles;
+  styles?: TwStyle | SerializedStyles;
 }
 
 export function SubTodoList({ todo, styles, }: Props) {

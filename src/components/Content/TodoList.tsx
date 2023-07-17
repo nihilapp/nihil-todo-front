@@ -1,11 +1,11 @@
 import React from 'react';
-import tw, { css } from 'twin.macro';
+import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { useTodos } from '@/hooks/queries';
 import { TodoItem } from './TodoItem';
 
 interface Props {
-  styles?: SerializedStyles;
+  styles?: TwStyle | SerializedStyles;
 }
 
 export function TodoList({ styles, }: Props) {
