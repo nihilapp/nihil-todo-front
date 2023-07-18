@@ -7,6 +7,7 @@ import { ITodo } from '@/types/entity.typs';
 import { useDeleteTodo, useUpdateTodo, useUpdateTodoStatus } from '@/hooks/queries';
 import { SubTodoInput } from './SubTodoInput';
 import { SubTodoList } from './SubTodoList';
+import { setDate } from '@/utils/date';
 
 interface Props {
   todo: ITodo;
@@ -82,9 +83,10 @@ export function TodoItem({ todo, styles, }: Props) {
 
   const style = {
     default: css([
-      tw`  `,
+      tw` mb-3 nth-last-1:mb-0 `,
       styles,
     ]),
+
   };
 
   return (
@@ -96,7 +98,7 @@ export function TodoItem({ todo, styles, }: Props) {
             <option value='PROGRESS'>진행중</option>
             <option value='DONE'>완료</option>
           </select>
-          <span>{todo.created}</span>
+          <span>{setDate(todo.created)}</span>
         </div>
         <div className='todo-middle'>
           <div>

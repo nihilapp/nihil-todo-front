@@ -16,8 +16,11 @@ export function Page({
 }: Props) {
   const style = {
     default: css([
-      tw` text-black-base p-1 px-2 bg-blue-100 rounded-1 `,
-      tw` hover:( text-white bg-blue-500 ) `,
+      tw` text-black-base p-1 px-2 bg-blue-100 rounded-1 border border-blue-100 text-[90%] `,
+      tw` hover:( bg-white text-blue-500 border-blue-500 ) `,
+      (css`
+        transition: all .3s ease-in-out;
+      `),
       icon && tw` inline-flex flex-row gap-1 items-center `,
       styles,
     ]),

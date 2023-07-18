@@ -2,20 +2,20 @@ import React, { useEffect } from 'react';
 import { Global } from '@emotion/react';
 import { useRouter } from 'next/router';
 import tw, { css } from 'twin.macro';
-import { useQueryClient } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   Footer, Header, Main, Meta
 } from '@/components/Layout';
 import { IAppLayoutProps, IMetaData } from '@/types/site.types';
-import { getCookie } from '@/utils/cookie';
-import { useRefresh } from '@/hooks/queries';
+import { getColor } from '@/utils/getColor';
 import { getStorage } from '@/utils/storage';
 import { IUser } from '@/types/entity.typs';
-import { AppDispatch } from '@/store';
+import { getCookie } from '@/utils/cookie';
 import { setExp, setUser } from '@/reducers/auth.reducer';
-import { getColor } from '@/utils/getColor';
+import { AppDispatch } from '@/store';
+import { useRefresh } from '@/hooks/queries';
 
 export function AppLayout({
   children, title, description, keywords, author, image, created, updated, tags, type, section,
@@ -53,12 +53,14 @@ export function AppLayout({
     const tokenExp = getCookie<number>('tokenExp');
 
     if (user) {
+      console.log('유저 정보를 가져옵니다.');
       dispatch(setUser({
         user,
       }));
     }
 
     if (tokenExp) {
+      console.log('토큰 만료 정보를 가져옵니다.');
       dispatch(setExp({
         tokenExp,
       }));

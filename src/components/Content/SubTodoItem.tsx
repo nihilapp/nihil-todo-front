@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { ISubTodo } from '@/types/entity.typs';
 import { useDeleteSubTodo, useUpdateSubTodo, useUpdateSubTodoStatus } from '@/hooks/queries';
+import { setDate } from '@/utils/date';
 
 interface Props {
   todo: ISubTodo;
@@ -89,7 +90,7 @@ export function SubTodoItem({ todo, styles, }: Props) {
             <option value='PROGRESS'>진행중</option>
             <option value='DONE'>완료</option>
           </select>
-          <span>{todo.created}</span>
+          <span>{setDate(todo.created)}</span>
         </div>
         <div className='todo-middle'>
           <div>
