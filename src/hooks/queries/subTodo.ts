@@ -1,6 +1,6 @@
 import { queryKeys } from '@/data/query-key.data';
 import {
-  useDelete, useGetAll, useGetAny, useGetById, usePatch, usePost
+  useDelete, useGetAll, useGetByAny, useGetById, usePatch, usePost
 } from './template';
 import { ISubTodo, TodoStatus } from '@/types/entity.typs';
 import { ICreateSubTodoDto, IUpdateSubTodoDto, IUpdateTodoStatusDto } from '@/types/dto.types';
@@ -15,12 +15,12 @@ export const useSubTodoById = (id: number) => useGetById<ISubTodo>({
   api: `/sub-todos/${id}`,
 });
 
-export const useSubTodoByUserId = (userId: number) => useGetAny<ISubTodo[]>({
+export const useSubTodoByUserId = (userId: number) => useGetByAny<ISubTodo[]>({
   key: queryKeys.subTodos.byUserId(userId),
   api: `/sub-todos/user/${userId}`,
 });
 
-export const useSubTodoByStatus = (status: TodoStatus) => useGetAny<ISubTodo[]>({
+export const useSubTodoByStatus = (status: TodoStatus) => useGetByAny<ISubTodo[]>({
   key: queryKeys.subTodos.byStatus(status),
   api: `/sub-todos/status/${status}`,
 });

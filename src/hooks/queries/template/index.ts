@@ -5,4 +5,5 @@ export * from './usePut';
 export * from './usePatch';
 export * from './useDelete';
 export * from './useDeletes';
+export * from './useGetByAny';
 export * from './useGetAny';

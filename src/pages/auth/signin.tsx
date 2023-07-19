@@ -2,6 +2,7 @@ import React from 'react';
 import tw, { css } from 'twin.macro';
 import { AppLayout } from '@/layouts';
 import { PageTitle } from '@/components/Base';
+import { SignInForm } from '@/components/Content';
 
 export default function signin() {
   const style = {
@@ -15,6 +16,7 @@ export default function signin() {
       <AppLayout title='로그인'>
         <div css={style.default}>
           <PageTitle>로그인</PageTitle>
+          <SignInForm />
         </div>
       </AppLayout>
     </>

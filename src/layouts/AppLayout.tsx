@@ -3,24 +3,27 @@ import { Global } from '@emotion/react';
 import { useRouter } from 'next/router';
 import tw, { css } from 'twin.macro';
 import { ToastContainer } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Footer, Header, Main, Meta
 } from '@/components/Layout';
 import { IAppLayoutProps, IMetaData } from '@/types/site.types';
 import { getColor } from '@/utils/getColor';
-import { getStorage } from '@/utils/storage';
+import { getStorage, removeStorage } from '@/utils/storage';
 import { IUser } from '@/types/entity.typs';
-import { getCookie } from '@/utils/cookie';
+import { getCookie, removeCookie } from '@/utils/cookie';
 import { setExp, setUser } from '@/reducers/auth.reducer';
-import { AppDispatch } from '@/store';
-import { useRefresh } from '@/hooks/queries';
+import { AppDispatch, RootState } from '@/store';
+import { useActivityCheck, useRefresh } from '@/hooks/queries';
 
 export function AppLayout({
   children, title, description, keywords, author, image, created, updated, tags, type, section,
 }: IAppLayoutProps) {
   const color = getColor();
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const { data: isLoggedIn, } = useActivityCheck(user.id);
   const dispatch = useDispatch<AppDispatch>();
 
   const qc = useQueryClient();
@@ -49,21 +52,26 @@ export function AppLayout({
   }, [ tokenExp, ]);
 
   useEffect(() => {
-    const user = getStorage<IUser>('user');
-    const tokenExp = getCookie<number>('tokenExp');
+    if (isLoggedIn) {
+      const user = getStorage<IUser>('user');
+      const tokenExp = getCookie<number>('tokenExp');
 
-    if (user) {
-      console.log('유저 정보를 가져옵니다.');
-      dispatch(setUser({
-        user,
-      }));
-    }
+      if (user) {
+        console.log('유저 정보를 가져옵니다.');
+        dispatch(setUser({
+          user,
+        }));
+      }
 
-    if (tokenExp) {
-      console.log('토큰 만료 정보를 가져옵니다.');
-      dispatch(setExp({
-        tokenExp,
-      }));
+      if (tokenExp) {
+        console.log('토큰 만료 정보를 가져옵니다.');
+        dispatch(setExp({
+          tokenExp,
+        }));
+      }
+    } else {
+      removeStorage('user');
+      removeCookie('tokenExp');
     }
   }, []);
 

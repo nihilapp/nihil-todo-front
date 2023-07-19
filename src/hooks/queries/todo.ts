@@ -1,7 +1,7 @@
 import { queryKeys } from '@/data/query-key.data';
 import {
   useDelete,
-  useGetAll, useGetAny, useGetById, usePatch, usePost
+  useGetAll, useGetByAny, useGetById, usePatch, usePost
 } from './template';
 import { ITodo, TodoStatus } from '@/types/entity.typs';
 import { ICreateTodoDto, IUpdateTodoDto, IUpdateTodoStatusDto } from '@/types/dto.types';
@@ -16,12 +16,12 @@ export const useTodoById = (id: number) => useGetById<ITodo>({
   api: `/todos/${id}`,
 });
 
-export const useTodoByUserId = (userId: number) => useGetAny<ITodo[]>({
+export const useTodoByUserId = (userId: number) => useGetByAny<ITodo[]>({
   key: queryKeys.todos.byUserId(userId),
   api: `/todos/user/${userId}`,
 });
 
-export const useTodoByStatus = (status: TodoStatus) => useGetAny<ITodo[]>({
+export const useTodoByStatus = (status: TodoStatus) => useGetByAny<ITodo[]>({
   key: queryKeys.todos.byStatus(status),
   api: `/todos/status/${status}`,
 });
