@@ -7,7 +7,7 @@ import { SignInForm } from '@/components/Content';
 export default function signin() {
   const style = {
     default: css([
-      tw`  `,
+      tw` w-[80%] mx-auto py-10 `,
     ]),
   };
 

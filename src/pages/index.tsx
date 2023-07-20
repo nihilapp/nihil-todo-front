@@ -41,7 +41,7 @@ export default function IndexPage() {
               <IsLoading />
             </>
           ) : (
-            <div tw='text-center'>
+            <div tw='w-[80%] mx-auto'>
               <PageTitle styles={tw` justify-center `}>사용하려면 로그인하세요</PageTitle>
               <SignInForm />
             </div>

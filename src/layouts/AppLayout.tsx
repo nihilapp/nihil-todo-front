@@ -23,7 +23,7 @@ export function AppLayout({
   const color = getColor();
 
   const user = useSelector((state: RootState) => state.auth.user);
-  const { data: isLoggedIn, } = useActivityCheck(user.id);
+  const { data: isLoggedIn, } = useActivityCheck(user?.id);
   const dispatch = useDispatch<AppDispatch>();
 
   const qc = useQueryClient();
@@ -57,14 +57,12 @@ export function AppLayout({
       const tokenExp = getCookie<number>('tokenExp');
 
       if (user) {
-        console.log('유저 정보를 가져옵니다.');
         dispatch(setUser({
           user,
         }));
       }
 
       if (tokenExp) {
-        console.log('토큰 만료 정보를 가져옵니다.');
         dispatch(setExp({
           tokenExp,
         }));
@@ -72,6 +70,14 @@ export function AppLayout({
     } else {
       removeStorage('user');
       removeCookie('tokenExp');
+
+      dispatch(setUser({
+        user: null,
+      }));
+
+      dispatch(setExp({
+        tokenExp: 0,
+      }));
     }
   }, []);
 

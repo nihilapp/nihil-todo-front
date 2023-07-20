@@ -84,7 +84,7 @@ export function SignInForm({ styles, }: Props) {
       textStyle.size,
     ]),
     input: css([
-      tw` border border-black-base/20 p-2 rounded-1 w-[80%] text-center outline-none `,
+      tw` border border-black-base/20 p-2 rounded-1 text-center outline-none w-full `,
       tw` transition-[border-color] duration-[.3s] `,
       tw` focus:( border-blue-400 ) `,
     ]),
@@ -92,7 +92,7 @@ export function SignInForm({ styles, }: Props) {
       tw` block mb-5 `,
     ]),
     button: css([
-      tw` w-[80%] p-2 bg-blue-400 mx-auto rounded-1 text-white outline-none font-700 `,
+      tw` p-2 bg-blue-400 mx-auto rounded-1 text-white outline-none font-700 w-full `,
       tw` transition-[background-color] duration-[.3s] `,
       tw` hover:( bg-blue-500 ) `,
     ]),
