@@ -52,7 +52,9 @@ export function AppLayout({
   }, [ tokenExp, ]);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    const isDev = process.env.NODE_ENV === 'development';
+
+    if (isDev && isLoggedIn) {
       const user = getStorage<IUser>('user');
       const tokenExp = getCookie<number>('tokenExp');
 
@@ -68,18 +70,10 @@ export function AppLayout({
         }));
       }
     } else {
-      removeStorage('user');
       removeCookie('tokenExp');
-
-      dispatch(setUser({
-        user: null,
-      }));
-
-      dispatch(setExp({
-        tokenExp: 0,
-      }));
+      removeStorage('user');
     }
-  }, []);
+  }, [ isLoggedIn, ]);
 
   const { asPath, } = useRouter();
 

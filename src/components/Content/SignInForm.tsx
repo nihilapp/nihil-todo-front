@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useCallback, useState } from 'react';
 import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
@@ -22,6 +23,7 @@ interface Props {
 export function SignInForm({ styles, }: Props) {
   const [ isError, setIsError, ] = useState(false);
   const [ errorMessage, setErrorMessage, ] = useState('');
+  const [ isSave, setIsSave, ] = useState('save');
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -30,6 +32,17 @@ export function SignInForm({ styles, }: Props) {
   const password = useInput<HTMLInputElement>('password');
 
   const signIn = useSignIn();
+
+  const onChangeSave = useCallback(
+    () => {
+      if (isSave === 'save') {
+        setIsSave('');
+      } else {
+        setIsSave('save');
+      }
+    },
+    [ isSave, ]
+  );
 
   const onSubmitForm = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
@@ -61,6 +74,10 @@ export function SignInForm({ styles, }: Props) {
             tokenExp: result.tokenExp,
           }));
 
+          if (isSave === 'save') {
+            setStorage('userEmail', email.data.value);
+          }
+
           email.setValue('');
           password.setValue('');
 
@@ -75,7 +92,7 @@ export function SignInForm({ styles, }: Props) {
         },
       });
     },
-    [ email, password, signIn, ]
+    [ email, password, signIn, isSave, ]
   );
   const style = {
     default: css([
@@ -88,8 +105,15 @@ export function SignInForm({ styles, }: Props) {
       tw` transition-[border-color] duration-[.3s] `,
       tw` focus:( border-blue-400 ) `,
     ]),
-    label: css([
-      tw` block mb-5 `,
+    idSaveInput: css([
+      tw` hidden `,
+    ]),
+    idSaveCheck: css([
+      tw` cursor-pointer block w-[25px] aspect-square rounded-1 border-2 border-black-base p-[3px] `,
+      isSave === 'save' && tw` border-blue-500 [span]:( bg-blue-500 w-full aspect-square block rounded-1 ) `,
+    ]),
+    idSaveLabel: css([
+      tw` select-none cursor-pointer block `,
     ]),
     button: css([
       tw` p-2 bg-blue-400 mx-auto rounded-1 text-white outline-none font-700 w-full `,
@@ -112,7 +136,7 @@ export function SignInForm({ styles, }: Props) {
             css={style.input}
           />
         </label>
-        <label htmlFor='password' css={style.label}>
+        <label htmlFor='password'>
           <input
             type='password'
             autoComplete='off'
@@ -123,6 +147,13 @@ export function SignInForm({ styles, }: Props) {
             <p css={style.errorMessage}>{errorMessage}</p>
           )}
         </label>
+        <div tw='flex flex-row gap-1 items-center mb-5'>
+          <input type='checkbox' id='id-save' css={style.idSaveInput} value={isSave} onChange={onChangeSave} />
+          <label htmlFor='id-save' css={style.idSaveCheck}>
+            <span />
+          </label>
+          <label htmlFor='id-save' css={style.idSaveLabel}>아이디 저장</label>
+        </div>
         <button css={style.button}>로그인</button>
       </form>
     </>

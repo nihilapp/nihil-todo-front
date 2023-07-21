@@ -129,38 +129,42 @@ export default function SignUpPage() {
           <PageTitle styles={tw`mb-5`}>회원가입</PageTitle>
           <form onSubmit={onSubmitForm}>
             <label htmlFor='email' css={style.label}>
-              <span><Icon icon='ph:caret-circle-right-fill' />이메일</span>
+              <span><Icon icon='gg:shape-rhombus' />이메일</span>
               <input
                 type='email'
                 autoComplete='off'
+                required
                 {...email.data}
                 css={style.input}
               />
             </label>
             <label htmlFor='user-name' css={style.label}>
-              <span><Icon icon='ph:caret-circle-right-fill' />닉네임</span>
+              <span><Icon icon='gg:shape-rhombus' />닉네임</span>
               <input
                 type='text'
                 autoComplete='off'
+                required
                 {...userName.data}
                 css={style.input}
               />
             </label>
             <label htmlFor='password' css={style.label}>
-              <span><Icon icon='ph:caret-circle-right-fill' />비밀번호</span>
+              <span><Icon icon='gg:shape-rhombus' />비밀번호</span>
               <input
                 type='password'
                 autoComplete='off'
+                required
                 {...password.data}
                 onChange={onChangePassword}
                 css={style.input}
               />
             </label>
             <label htmlFor='password-confirm' css={style.label}>
-              <span><Icon icon='ph:caret-circle-right-fill' />비밀번호 확인</span>
+              <span><Icon icon='gg:shape-rhombus' />비밀번호 확인</span>
               <input
                 type='password'
                 autoComplete='off'
+                required
                 {...passwordConfirm.data}
                 onChange={onChangePasswordConfirm}
                 css={style.input}
