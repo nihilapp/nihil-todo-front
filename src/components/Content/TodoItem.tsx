@@ -8,6 +8,9 @@ import { useDeleteTodo, useUpdateTodo, useUpdateTodoStatus } from '@/hooks/queri
 import { SubTodoInput } from './SubTodoInput';
 import { SubTodoList } from './SubTodoList';
 import { setDate } from '@/utils/date';
+import { Select } from '../Base';
+import { todoStatusData } from '@/data/select.data';
+import { ICheckSelectData } from '@/types/other.type';
 
 interface Props {
   todo: ITodo;
@@ -18,6 +21,7 @@ export function TodoItem({ todo, styles, }: Props) {
   const [ isEdit, setIsEdit, ] = useState(false);
   const [ isShowSubTodos, setIsShowSubTodos, ] = useState(false);
   const [ content, setContent, ] = useState(todo.content);
+  const [ selectedStatus, setSelectedStatus, ] = useState<ICheckSelectData>(null);
 
   const status = {
     ADDED: '대기중',
@@ -93,6 +97,12 @@ export function TodoItem({ todo, styles, }: Props) {
     <>
       <div css={style.default}>
         <div className='todo-top'>
+          <Select
+            item={selectedStatus}
+            onChange={setSelectedStatus}
+            data={todoStatusData}
+          />
+
           <select onChange={onChangeStatus}>
             <option value='ADDED'>대기중</option>
             <option value='PROGRESS'>진행중</option>

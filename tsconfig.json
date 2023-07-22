@@ -48,6 +48,9 @@
       ],
       "@/types/*": [
         "./src/types/*"
+      ],
+      "@/context/*": [
+        "./src/context/*"
       ]
     },
     "lib": [

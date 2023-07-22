@@ -1,5 +1,4 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import tw, { TwStyle, css } from 'twin.macro';
 import { SerializedStyles } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -9,12 +8,13 @@ import { AxiosError } from 'axios';
 import { useInput } from '@/hooks';
 import { useSignIn } from '@/hooks/queries';
 import { dateAddHour } from '@/utils/date';
-import { setStorage } from '@/utils/storage';
+import { getStorage, setStorage } from '@/utils/storage';
 import { setCookie } from '@/utils/cookie';
 import { AppDispatch } from '@/store';
 import { setExp, setUser } from '@/reducers/auth.reducer';
 import { textStyle } from '@/styles/text.style';
 import { IErrorMessage } from '@/types/axios.type';
+import { Check } from '../Base';
 
 interface Props {
   styles?: TwStyle | SerializedStyles;
@@ -23,7 +23,8 @@ interface Props {
 export function SignInForm({ styles, }: Props) {
   const [ isError, setIsError, ] = useState(false);
   const [ errorMessage, setErrorMessage, ] = useState('');
-  const [ isSave, setIsSave, ] = useState('save');
+  const [ idSave, setIdSave, ] = useState<string[]>([]);
+  // const [ isSave, setIsSave, ] = useState('');
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -32,17 +33,6 @@ export function SignInForm({ styles, }: Props) {
   const password = useInput<HTMLInputElement>('password');
 
   const signIn = useSignIn();
-
-  const onChangeSave = useCallback(
-    () => {
-      if (isSave === 'save') {
-        setIsSave('');
-      } else {
-        setIsSave('save');
-      }
-    },
-    [ isSave, ]
-  );
 
   const onSubmitForm = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
@@ -74,7 +64,7 @@ export function SignInForm({ styles, }: Props) {
             tokenExp: result.tokenExp,
           }));
 
-          if (isSave === 'save') {
+          if (idSave.includes('save')) {
             setStorage('userEmail', email.data.value);
           }
 
@@ -92,8 +82,19 @@ export function SignInForm({ styles, }: Props) {
         },
       });
     },
-    [ email, password, signIn, isSave, ]
+    [ email, password, signIn, idSave, ]
   );
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const userEmail = getStorage<string>('userEmail');
+
+      if (userEmail) {
+        email.setValue(userEmail);
+      }
+    }
+  }, []);
+
   const style = {
     default: css([
       tw` flex flex-col gap-2 `,
@@ -101,19 +102,9 @@ export function SignInForm({ styles, }: Props) {
       textStyle.size,
     ]),
     input: css([
-      tw` border border-black-base/20 p-2 rounded-1 text-center outline-none w-full `,
+      tw` border border-black-base/20 p-2 rounded-1 outline-none w-full `,
       tw` transition-[border-color] duration-[.3s] `,
       tw` focus:( border-blue-400 ) `,
-    ]),
-    idSaveInput: css([
-      tw` hidden `,
-    ]),
-    idSaveCheck: css([
-      tw` cursor-pointer block w-[25px] aspect-square rounded-1 border-2 border-black-base p-[3px] `,
-      isSave === 'save' && tw` border-blue-500 [span]:( bg-blue-500 w-full aspect-square block rounded-1 ) `,
-    ]),
-    idSaveLabel: css([
-      tw` select-none cursor-pointer block `,
     ]),
     button: css([
       tw` p-2 bg-blue-400 mx-auto rounded-1 text-white outline-none font-700 w-full `,
@@ -132,6 +123,7 @@ export function SignInForm({ styles, }: Props) {
           <input
             type='text'
             autoComplete='off'
+            placeholder='이메일'
             {...email.data}
             css={style.input}
           />
@@ -140,6 +132,7 @@ export function SignInForm({ styles, }: Props) {
           <input
             type='password'
             autoComplete='off'
+            placeholder='비밀번호'
             {...password.data}
             css={style.input}
           />
@@ -147,13 +140,13 @@ export function SignInForm({ styles, }: Props) {
             <p css={style.errorMessage}>{errorMessage}</p>
           )}
         </label>
-        <div tw='flex flex-row gap-1 items-center mb-5'>
-          <input type='checkbox' id='id-save' css={style.idSaveInput} value={isSave} onChange={onChangeSave} />
-          <label htmlFor='id-save' css={style.idSaveCheck}>
-            <span />
-          </label>
-          <label htmlFor='id-save' css={style.idSaveLabel}>아이디 저장</label>
-        </div>
+        <Check
+          data={[ { value: 'save', label: '아이디 저장', }, ]}
+          name='idSave'
+          values={idSave}
+          onChange={setIdSave}
+          styles={tw`mb-5`}
+        />
         <button css={style.button}>로그인</button>
       </form>
     </>

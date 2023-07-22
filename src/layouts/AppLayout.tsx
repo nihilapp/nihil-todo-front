@@ -54,6 +54,9 @@ export function AppLayout({
   useEffect(() => {
     const isDev = process.env.NODE_ENV === 'development';
 
+    console.log('isDev >> ', isDev);
+    console.log('isLoggedIn >> ', isLoggedIn);
+
     if (isDev && isLoggedIn) {
       const user = getStorage<IUser>('user');
       const tokenExp = getCookie<number>('tokenExp');
