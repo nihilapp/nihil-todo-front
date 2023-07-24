@@ -5,12 +5,14 @@ interface IAuthState {
   signUpComplete: boolean;
   user: IUser;
   tokenExp: number;
+  userActivity: boolean;
 }
 
 const initialState: IAuthState = {
   signUpComplete: false,
   user: null,
   tokenExp: 0,
+  userActivity: false,
 };
 
 export const authReducer = createSlice({
@@ -37,8 +39,17 @@ export const authReducer = createSlice({
     ) {
       state.tokenExp = payload.tokenExp;
     },
+
+    setUserActivity(
+      state,
+      { payload, }: PayloadAction<{userActivity: boolean}>
+    ) {
+      state.userActivity = payload.userActivity;
+    },
   },
 });
 
-export const { setSignUpComplete, setUser, setExp, } = authReducer.actions;
+export const {
+  setUserActivity, setSignUpComplete, setUser, setExp,
+} = authReducer.actions;
 export default authReducer.reducer;

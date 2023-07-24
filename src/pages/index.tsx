@@ -38,7 +38,6 @@ export default function IndexPage() {
             <>
               <TodoInput />
               <TodoList />
-              <IsLoading />
             </>
           ) : (
             <div tw='w-[80%] mx-auto'>
@@ -47,6 +46,7 @@ export default function IndexPage() {
             </div>
           )}
         </div>
+        <IsLoading />
       </AppLayout>
     </>
   );

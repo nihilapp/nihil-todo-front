@@ -11,7 +11,7 @@ import { dateAddHour } from '@/utils/date';
 import { getStorage, setStorage } from '@/utils/storage';
 import { setCookie } from '@/utils/cookie';
 import { AppDispatch } from '@/store';
-import { setExp, setUser } from '@/reducers/auth.reducer';
+import { setExp, setUser, setUserActivity } from '@/reducers/auth.reducer';
 import { textStyle } from '@/styles/text.style';
 import { IErrorMessage } from '@/types/axios.type';
 import { Check } from '../Base';
@@ -54,6 +54,11 @@ export function SignInForm({ styles, }: Props) {
           setStorage('user', result.user);
           dispatch(setUser({
             user: result.user,
+          }));
+
+          setStorage('userActivity', true);
+          dispatch(setUserActivity({
+            userActivity: true,
           }));
 
           setCookie('tokenExp', result.tokenExp, {

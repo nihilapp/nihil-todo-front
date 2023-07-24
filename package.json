@@ -50,6 +50,7 @@
     "@emotion/babel-preset-css-prop": "^11.11.0",
     "@svgr/webpack": "^8.0.1",
     "@tailwindcss/typography": "^0.5.9",
+    "@total-typescript/ts-reset": "^0.4.2",
     "@types/node": "^20.4.3",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

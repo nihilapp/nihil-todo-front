@@ -3,27 +3,24 @@ import { Global } from '@emotion/react';
 import { useRouter } from 'next/router';
 import tw, { css } from 'twin.macro';
 import { ToastContainer } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Footer, Header, Main, Meta
 } from '@/components/Layout';
 import { IAppLayoutProps, IMetaData } from '@/types/site.types';
 import { getColor } from '@/utils/getColor';
-import { getStorage, removeStorage } from '@/utils/storage';
+import { getStorage } from '@/utils/storage';
 import { IUser } from '@/types/entity.typs';
-import { getCookie, removeCookie } from '@/utils/cookie';
+import { getCookie } from '@/utils/cookie';
 import { setExp, setUser } from '@/reducers/auth.reducer';
-import { AppDispatch, RootState } from '@/store';
-import { useActivityCheck, useRefresh } from '@/hooks/queries';
+import { AppDispatch } from '@/store';
+import { useRefresh } from '@/hooks/queries';
 
 export function AppLayout({
   children, title, description, keywords, author, image, created, updated, tags, type, section,
 }: IAppLayoutProps) {
   const color = getColor();
-
-  const user = useSelector((state: RootState) => state.auth.user);
-  const { data: isLoggedIn, } = useActivityCheck(user?.id);
   const dispatch = useDispatch<AppDispatch>();
 
   const qc = useQueryClient();
@@ -52,31 +49,21 @@ export function AppLayout({
   }, [ tokenExp, ]);
 
   useEffect(() => {
-    const isDev = process.env.NODE_ENV === 'development';
+    const user = getStorage<IUser>('user');
+    const tokenExp = getCookie<number>('tokenExp');
 
-    console.log('isDev >> ', isDev);
-    console.log('isLoggedIn >> ', isLoggedIn);
-
-    if (isDev && isLoggedIn) {
-      const user = getStorage<IUser>('user');
-      const tokenExp = getCookie<number>('tokenExp');
-
-      if (user) {
-        dispatch(setUser({
-          user,
-        }));
-      }
-
-      if (tokenExp) {
-        dispatch(setExp({
-          tokenExp,
-        }));
-      }
-    } else {
-      removeCookie('tokenExp');
-      removeStorage('user');
+    if (user) {
+      dispatch(setUser({
+        user,
+      }));
     }
-  }, [ isLoggedIn, ]);
+
+    if (tokenExp) {
+      dispatch(setExp({
+        tokenExp,
+      }));
+    }
+  }, []);
 
   const { asPath, } = useRouter();
 

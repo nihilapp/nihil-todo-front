@@ -7,7 +7,7 @@ import { Icon } from '@iconify/react';
 import { Page } from '../Base';
 import { useSignOut } from '@/hooks/queries';
 import { AppDispatch, RootState } from '@/store';
-import { setExp, setUser } from '@/reducers/auth.reducer';
+import { setExp, setUser, setUserActivity } from '@/reducers/auth.reducer';
 import { removeStorage } from '@/utils/storage';
 import { removeCookie } from '@/utils/cookie';
 
@@ -33,6 +33,11 @@ export function UserNav({ styles, }: Props) {
         dispatch(setExp({
           tokenExp: 0,
         }));
+
+        removeStorage('userActivity');
+        dispatch(setUserActivity({
+          userActivity: false,
+        }));
       },
     });
 
@@ -45,8 +50,8 @@ export function UserNav({ styles, }: Props) {
       styles,
     ]),
     button: css([
-      tw` text-black-base p-1 px-2 bg-blue-100 rounded-1 border border-blue-100 text-[90%] `,
-      tw` hover:( bg-white text-blue-500 border-blue-500 ) `,
+      tw` text-black-base p-1 px-2 bg-white rounded-1 text-blue-400 font-500 border border-blue-400 text-[90%] `,
+      tw` hover:( bg-blue-500 text-white border-blue-500 ) `,
       (css`
         transition: all .3s ease-in-out;
       `),

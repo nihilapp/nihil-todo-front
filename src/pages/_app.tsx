@@ -4,7 +4,6 @@ import { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { store } from '@/store';
 
@@ -21,13 +20,13 @@ const queryClient = new QueryClient({
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
       onError(error: AxiosError) {
-        toast.error(`${error.message}`);
+        console.error(error.message);
       },
     },
     mutations: {
       retry: 0,
       onError(error: AxiosError) {
-        toast.error(`${error.message}`);
+        console.error(error.message);
       },
     },
   },

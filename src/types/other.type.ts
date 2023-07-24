@@ -20,4 +20,9 @@ export interface ICheckContextValue {
 export interface ISelectContextValue {
   // eslint-disable-next-line no-unused-vars
   selectItem: (value: ICheckSelectData) => void;
+  // eslint-disable-next-line no-unused-vars
+  isSelect: (value: string) => boolean;
+  // eslint-disable-next-line no-unused-vars
+  isDisabled: (disabled: boolean) => boolean;
+  defaultSelect: () => void;
 }

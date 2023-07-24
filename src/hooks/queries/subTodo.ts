@@ -5,7 +5,7 @@ import {
 import { ISubTodo, TodoStatus } from '@/types/entity.typs';
 import { ICreateSubTodoDto, IUpdateSubTodoDto, IUpdateTodoStatusDto } from '@/types/dto.types';
 
-export const useSubTodo = (todoId: number) => useGetAll<ISubTodo[]>({
+export const useSubTodos = (todoId: number) => useGetAll<ISubTodo[]>({
   key: queryKeys.subTodos.all(todoId),
   api: `/sub-todos/todo/${todoId}`,
 });

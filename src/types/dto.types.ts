@@ -53,6 +53,10 @@ export interface IUpdateTodoStatusDto {
   status: TodoStatus;
 }
 
-export interface IUpdateSubTodoStatusTdo {
+export interface IUpdateSubTodoStatusDto {
   status: TodoStatus;
+}
+
+export interface IUserIdDto {
+  userId: number;
 }

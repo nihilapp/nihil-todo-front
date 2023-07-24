@@ -1,28 +1,32 @@
-import { useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { apiGet } from '@/utils/axios';
+import { usePost } from './template';
+import { IUserIdDto } from '@/types/dto.types';
 
-export const useActivityCheck = (userId: number) => {
-  const {
-    data = false, isLoading, isError, error, isSuccess, refetch,
-  } = useQuery<boolean, AxiosError>(
-    [ 'ActivityCheck', userId, ],
-    async () => {
-      const { data, } = await apiGet<boolean>(`/user-activity/${userId}`);
+export const useUserActivity = () => usePost<boolean, IUserIdDto>({
+  api: '/user-activity',
+});
 
-      return data;
-    },
-    {
-      enabled: !!userId,
-    }
-  );
+// export const useActivityCheck = (userId: number) => {
+//   const {
+//     data = false, isLoading, isError, error, isSuccess, refetch,
+//   } = useQuery<boolean, AxiosError>(
+//     [ 'ActivityCheck', userId, ],
+//     async () => {
+//       console.log('userId >> ', userId);
+//       const { data, } = await apiGet<boolean>(`/user-activity/${userId}`);
 
-  return {
-    data: data as boolean,
-    isLoading,
-    isError,
-    error,
-    isSuccess,
-    refetch,
-  };
-};
+//       return data;
+//     },
+//     {
+//       enabled: !!userId,
+//     }
+//   );
+
+//   return {
+//     data: data as boolean,
+//     isLoading,
+//     isError,
+//     error,
+//     isSuccess,
+//     refetch,
+//   };
+// };
