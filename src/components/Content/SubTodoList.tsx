@@ -15,7 +15,7 @@ export function SubTodoList({ todo, styles, }: Props) {
 
   const style = {
     default: css([
-      tw`  `,
+      tw` ml-8 `,
       styles,
     ]),
   };

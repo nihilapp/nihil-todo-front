@@ -10,12 +10,12 @@ import {
 } from '@/components/Layout';
 import { IAppLayoutProps, IMetaData } from '@/types/site.types';
 import { getColor } from '@/utils/getColor';
-import { getStorage } from '@/utils/storage';
+import { getStorage, removeStorage } from '@/utils/storage';
 import { IUser } from '@/types/entity.typs';
-import { getCookie } from '@/utils/cookie';
+import { getCookie, removeCookie } from '@/utils/cookie';
 import { setExp, setUser } from '@/reducers/auth.reducer';
 import { AppDispatch } from '@/store';
-import { useRefresh } from '@/hooks/queries';
+import { useMe, useRefresh } from '@/hooks/queries';
 
 export function AppLayout({
   children, title, description, keywords, author, image, created, updated, tags, type, section,
@@ -27,6 +27,7 @@ export function AppLayout({
   const tokenExp = getCookie<number>('tokenExp');
 
   const { refetch, } = useRefresh(tokenExp);
+  const myData = useMe();
 
   useEffect(() => {
     const isExpired = () => {
@@ -49,6 +50,11 @@ export function AppLayout({
   }, [ tokenExp, ]);
 
   useEffect(() => {
+    if (!myData.isLoading && myData.isError) {
+      removeStorage('user');
+      removeCookie('tokenExp');
+    }
+
     const user = getStorage<IUser>('user');
     const tokenExp = getCookie<number>('tokenExp');
 

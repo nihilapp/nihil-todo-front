@@ -10,12 +10,13 @@ import { ICheckSelectData } from '@/types/other.type';
 import { textStyle } from '@/styles/text.style';
 import { SelectContext } from '@/context/selectbox.context';
 import { SelectList } from './SelectList';
-import { useUpdateTodoStatus } from '@/hooks/queries';
+import { useUpdateSubTodoStatus, useUpdateTodoStatus } from '@/hooks/queries';
 
 interface Props {
   data?: ICheckSelectData[];
   item: ICheckSelectData;
   disabled?: boolean;
+  mode: ('main' | 'sub');
   todoId: number;
   // eslint-disable-next-line no-unused-vars
   onChange: (value: ICheckSelectData) => void;
@@ -23,26 +24,39 @@ interface Props {
 }
 
 export function Select({
-  data = [], item, disabled: groupDisabled, todoId, onChange, styles,
+  data = [], item, disabled: groupDisabled, mode, todoId, onChange, styles,
 }: Props) {
   const [ isOpen, setIsOpen, ] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const qc = useQueryClient();
   const updateTodoStatus = useUpdateTodoStatus(todoId);
+  const updateSubTodoStatus = useUpdateSubTodoStatus(todoId);
 
   const selectItem = useCallback(
     (data: ICheckSelectData) => {
       onChange(data);
-      updateTodoStatus.mutate({
-        status: data.value,
-      }, {
-        onSuccess() {
-          qc.invalidateQueries();
-          buttonRef.current.click();
-          toast.success(`상태를 '${data.label}'으로 변경했습니다.`);
-        },
-      });
+      if (mode === 'main') {
+        updateTodoStatus.mutate({
+          status: data.value,
+        }, {
+          onSuccess() {
+            qc.invalidateQueries();
+            buttonRef.current.click();
+            toast.success(`상태를 '${data.label}'으로 변경했습니다.`);
+          },
+        });
+      } else {
+        updateSubTodoStatus.mutate({
+          status: data.value,
+        }, {
+          onSuccess() {
+            qc.invalidateQueries();
+            buttonRef.current.click();
+            toast.success(`상태를 '${data.label}'으로 변경했습니다.`);
+          },
+        });
+      }
     },
     [ updateTodoStatus, ]
   );
@@ -75,10 +89,39 @@ export function Select({
     ]),
     top: css([
       tw` flex flex-row items-stretch `,
-      tw` [div]:( flex-1 shrink-0 p-2 py-1 border rounded-l-1 [&.label-enabled]:( border-blue-500/50 bg-blue-100 ) [&.label-disabled]:( border-black-200 bg-black-50 text-black-400 ) ) `,
-      tw` [button]:( [&.button-enabled]:( p-2 py-1 rounded-r-1 bg-blue-400 text-white hover:bg-blue-500 transition-[background-color] duration-[.3s] ) [&.button-disabled]:( rounded-r-1 p-2 py-1 bg-black-200 text-black-400 cursor-not-allowed ) ) `,
+      tw` [div]:( flex-1 shrink-0 p-2 py-1 border [&.label-enabled]:( border-blue-400 bg-white text-blue-400 ) [&.label-disabled]:( border-black-200 bg-black-50 text-black-400 ) ) `,
+      tw` [button]:( p-2 py-1 [&.button-enabled]:( bg-blue-400 text-white hover:bg-blue-500 transition-[background-color] duration-[.3s] ) [&.button-disabled]:( bg-black-200 text-black-400 cursor-not-allowed ) ) `,
+      (css`
+        div {
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: ${isOpen ? '0' : '4px'};
+
+          &.label-enabled {
+            ${mode === 'main' ? tw` text-blue-400 border-blue-400 ` : tw` text-blue-500 border-blue-500 `};
+          }
+
+          &.label-disabled {
+            ${mode === 'main' ? tw` bg-black-50 border-black-200 text-black-400 ` : tw` bg-black-100 border-black-300 text-black-500 `};
+          }
+        }
+
+        button {
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: ${isOpen ? '0' : '4px'};
+
+          &.button-enabled {
+            ${mode === 'main' ? tw` bg-blue-400 ` : tw` bg-blue-500 `};
+          }
+
+          &.button-disabled {
+            ${mode === 'main' ? tw` bg-black-200 text-black-400 ` : tw` bg-black-300 text-black-500 `};
+          }
+        }
+      `),
     ]),
   };
+
+  console.log('isOpen >> ', isOpen);
 
   return (
     <>

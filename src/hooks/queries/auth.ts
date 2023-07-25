@@ -16,7 +16,7 @@ export const useSignOut = () => usePost<{message: string}, Record<string, never>
   api: '/auth/signout',
 });
 
-export const useGetMe = () => useGetAny<IUser>({
+export const useMe = () => useGetAny<IUser>({
   key: queryKeys.auth.me,
   api: '/auth/me',
 });

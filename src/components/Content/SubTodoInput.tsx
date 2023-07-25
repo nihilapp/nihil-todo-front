@@ -57,7 +57,7 @@ export function SubTodoInput({ todo, styles, }: Props) {
 
   const style = {
     default: css([
-      tw` mt-2 `,
+      tw` mt-2 ml-8 `,
       todoInputStyle,
       styles,
     ]),

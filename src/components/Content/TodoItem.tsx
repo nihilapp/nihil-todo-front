@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { Icon } from '@iconify/react';
 import { ITodo } from '@/types/entity.typs';
-import { useDeleteTodo, useSubTodos, useUpdateTodo } from '@/hooks/queries';
+import { useDeleteTodo, useUpdateTodo } from '@/hooks/queries';
 import { SubTodoInput } from './SubTodoInput';
 import { SubTodoList } from './SubTodoList';
 import { setDate } from '@/utils/date';
@@ -37,7 +37,6 @@ export function TodoItem({ todo, styles, }: Props) {
   const qc = useQueryClient();
   const updateTodo = useUpdateTodo(todo.id);
   const deleteTodo = useDeleteTodo(todo.id);
-  const subTodos = useSubTodos(todo.id);
 
   const onChangeTodo = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +77,7 @@ export function TodoItem({ todo, styles, }: Props) {
 
   const style = {
     default: css([
-      tw` mb-5 nth-last-1:mb-0 text-black-base `,
+      tw` mb-5 nth-last-1:mb-0 text-black-base p-3 rounded-1 bg-white border border-black-100 shadow-sm shadow-black-300 `,
       styles,
       textStyle.size,
     ]),
@@ -107,6 +106,7 @@ export function TodoItem({ todo, styles, }: Props) {
             data={todoStatusData}
             todoId={todo.id}
             disabled={isEdit}
+            mode='main'
           />
           <div tw='flex flex-row gap-2 items-center'>
             <Icon icon='zondicons:time' />
@@ -141,29 +141,25 @@ export function TodoItem({ todo, styles, }: Props) {
             </>
           )}
         </div>
-        {subTodos.data.length > 0 && (
-          <>
-            <div css={style.bottom}>
-              <button onClick={onClickOpen}>
-                {isShowSubTodos ? (
-                  <>
-                    <Icon icon='ep:arrow-up-bold' />
-                    <span css={textStyle.hidden}>하위 목록 접기</span>
-                  </>
-                ) : (
-                  <>
-                    <Icon icon='ep:arrow-down-bold' />
-                    <span css={textStyle.hidden}>하위 목록 펼치기</span>
-                  </>
-                )}
-              </button>
-            </div>
-            {isShowSubTodos && (
+        <div css={style.bottom}>
+          <button onClick={onClickOpen}>
+            {isShowSubTodos ? (
               <>
-                <SubTodoInput todo={todo} />
-                <SubTodoList todo={todo} />
+                <Icon icon='ep:arrow-up-bold' />
+                <span css={textStyle.hidden}>하위 목록 접기</span>
+              </>
+            ) : (
+              <>
+                <Icon icon='ep:arrow-down-bold' />
+                <span css={textStyle.hidden}>하위 목록 펼치기</span>
               </>
             )}
+          </button>
+        </div>
+        {isShowSubTodos && (
+          <>
+            <SubTodoInput todo={todo} />
+            <SubTodoList todo={todo} />
           </>
         )}
       </div>
